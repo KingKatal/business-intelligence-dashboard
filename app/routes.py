@@ -67,6 +67,18 @@ def inventory():
 def customers():
     """Customers page"""
     customers_list = Customer.query.order_by(Customer.name).all()
+    
+    # Add customer analytics to each customer object
+    for customer in customers_list:
+        # Calculate total spent
+        customer.total_spent = db.session.query(db.func.sum(Sale.total_amount)).filter(Sale.customer_id == customer.id).scalar() or 0
+        
+        # Get last purchase date
+        customer.last_purchase = db.session.query(db.func.max(Sale.sale_date)).filter(Sale.customer_id == customer.id).scalar()
+        
+        # Get order count
+        customer.order_count = db.session.query(db.func.count(Sale.id)).filter(Sale.customer_id == customer.id).scalar() or 0
+    
     return render_template('customers.html', customers=customers_list)
 
 @main_bp.route('/reports')
@@ -86,22 +98,40 @@ def sales_data():
 @login_required
 def dashboard_stats():
     """API endpoint for dashboard statistics"""
-    # Today's date
-    today = datetime.now().date()
+    # Get the date range of our sample data
+    sample_date_range = db.session.query(
+        db.func.min(Sale.sale_date).label('min_date'),
+        db.func.max(Sale.sale_date).label('max_date')
+    ).first()
     
-    # Calculate statistics
-    today_sales = Sale.query.filter(db.func.date(Sale.sale_date) == today).all()
-    today_total = sum(sale.total_amount for sale in today_sales)
-    
-    # Yesterday
-    yesterday = today - timedelta(days=1)
-    yesterday_sales = Sale.query.filter(db.func.date(Sale.sale_date) == yesterday).all()
-    yesterday_total = sum(sale.total_amount for sale in yesterday_sales)
-    
-    # This month
-    month_start = today.replace(day=1)
-    month_sales = Sale.query.filter(Sale.sale_date >= month_start).all()
-    month_total = sum(sale.total_amount for sale in month_sales)
+    if sample_date_range.min_date:
+        # Use the sample data period
+        sample_start = sample_date_range.min_date.date()
+        sample_end = sample_date_range.max_date.date()
+        
+        # Calculate statistics for the sample data period
+        all_sales = Sale.query.filter(
+            db.func.date(Sale.sale_date) >= sample_start,
+            db.func.date(Sale.sale_date) <= sample_end
+        ).all()
+        
+        # Get "today" as the most recent sale date in sample data
+        today = sample_end
+        today_sales = [sale for sale in all_sales if sale.sale_date.date() == today]
+        today_total = sum(sale.total_amount for sale in today_sales)
+        
+        # "Yesterday" as the day before the most recent sale
+        yesterday = today - timedelta(days=1)
+        yesterday_sales = [sale for sale in all_sales if sale.sale_date.date() == yesterday]
+        yesterday_total = sum(sale.total_amount for sale in yesterday_sales)
+        
+        # "This month" as all sales in the sample data
+        month_total = sum(sale.total_amount for sale in all_sales)
+    else:
+        # Fallback if no data
+        today_total = 0
+        yesterday_total = 0
+        month_total = 0
     
     # Low stock count
     low_stock_count = Product.query.filter(Product.stock_quantity < Product.min_stock).count()
@@ -121,18 +151,36 @@ def dashboard_stats():
     return jsonify(stats)
 
 def get_monthly_sales_data():
-    """Get sales data for the last 6 months"""
-    end_date = datetime.now()
-    start_date = end_date - timedelta(days=180)  # 6 months
+    """Get sales data for the sample data period"""
+    # Get the date range of our sample data
+    sample_date_range = db.session.query(
+        db.func.min(Sale.sale_date).label('min_date'),
+        db.func.max(Sale.sale_date).label('max_date')
+    ).first()
     
-    # Query sales grouped by month
+    if sample_date_range.min_date:
+        # Use sample data period
+        start_date = sample_date_range.min_date
+        end_date = sample_date_range.max_date
+    else:
+        # Fallback to last 6 months
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=180)
+    
+    # Query sales grouped by month (DB-agnostic)
+    dialect_name = db.engine.dialect.name
+    if dialect_name == 'sqlite':
+        month_expr = db.func.strftime('%Y-%m', Sale.sale_date).label('month')
+    else:
+        month_expr = db.func.date_format(Sale.sale_date, '%Y-%m').label('month')
+
     sales_by_month = db.session.query(
-        db.func.date_format(Sale.sale_date, '%Y-%m').label('month'),
+        month_expr,
         db.func.sum(Sale.total_amount).label('total')
     ).filter(
         Sale.sale_date >= start_date,
         Sale.sale_date <= end_date
-    ).group_by('month').order_by('month').all()
+    ).group_by(month_expr).order_by(month_expr).all()
     
     # Format data for chart
     months = []

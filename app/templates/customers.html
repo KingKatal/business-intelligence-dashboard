@@ -130,28 +130,24 @@
                                     </span>
                                 </td>
                                 <td>
-                                    {% set total_spent = calculate_customer_total(customer) %}
-                                    <strong>MWK {{ "%.2f"|format(total_spent) }}</strong>
+                                    <strong>MWK {{ "%.2f"|format(customer.total_spent) }}</strong>
                                 </td>
                                 <td>
-                                    {% set last_purchase = get_last_purchase(customer) %}
-                                    {% if last_purchase %}
-                                    {{ last_purchase.strftime('%Y-%m-%d') }}
+                                    {% if customer.last_purchase %}
+                                    {{ customer.last_purchase.strftime('%Y-%m-%d') }}
                                     {% else %}
                                     <span class="text-muted">No purchases</span>
                                     {% endif %}
                                 </td>
                                 <td>
-                                    {% set order_count = get_order_count(customer) %}
-                                    <span class="badge {% if order_count > 5 %}bg-success{% elif order_count > 0 %}bg-primary{% else %}bg-secondary{% endif %}">
-                                        {{ order_count }} orders
+                                    <span class="badge {% if customer.order_count > 5 %}bg-success{% elif customer.order_count > 0 %}bg-primary{% else %}bg-secondary{% endif %}">
+                                        {{ customer.order_count }} orders
                                     </span>
                                 </td>
                                 <td>
-                                    {% set order_count = get_order_count(customer) %}
-                                    {% if order_count > 5 %}
+                                    {% if customer.order_count > 5 %}
                                     <span class="badge bg-success">VIP</span>
-                                    {% elif order_count > 0 %}
+                                    {% elif customer.order_count > 0 %}
                                     <span class="badge bg-primary">Active</span>
                                     {% else %}
                                     <span class="badge bg-secondary">New</span>

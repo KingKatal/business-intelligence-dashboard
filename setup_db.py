@@ -1,5 +1,66 @@
 import mysql.connector
+import os
 import sys
+
+def split_sql_script(script):
+    statements = []
+    current = []
+    delimiter = ';'
+
+    for raw_line in script.splitlines():
+        stripped = raw_line.strip()
+        if stripped.upper().startswith('DELIMITER '):
+            delimiter = stripped.split(None, 1)[1]
+            continue
+
+        if delimiter != ';':
+            if stripped.endswith(delimiter):
+                current.append(raw_line[: len(raw_line) - len(delimiter)])
+                statement = '\n'.join(current).strip()
+                if statement and not statement.endswith(';'):
+                    statement += ';'
+                if statement:
+                    statements.append(statement)
+                current = []
+            else:
+                current.append(raw_line)
+        else:
+            current.append(raw_line)
+            if stripped.endswith(';'):
+                statement = '\n'.join(current).strip()
+                if statement:
+                    statements.append(statement)
+                current = []
+
+    if current:
+        statement = '\n'.join(current).strip()
+        if statement:
+            statements.append(statement)
+
+    return statements
+
+
+def execute_sql_script(cursor, script, ignore_errors=None):
+    if ignore_errors is None:
+        ignore_errors = {1061, 1062}
+
+    statements = split_sql_script(script)
+    for i, statement in enumerate(statements, start=1):
+        statement = statement.strip()
+        if not statement or statement.startswith('--'):
+            continue
+
+        try:
+            cursor.execute(statement)
+            if cursor.description:
+                cursor.fetchall()
+            print(f"  ✓ Statement {i} executed")
+        except mysql.connector.Error as err:
+            if err.errno in ignore_errors:
+                print(f"  ⚠️ Statement {i} ignored: {err}")
+                continue
+            raise
+
 
 def setup_database():
     print("🚀 Setting up Business Dashboard Database...")
@@ -26,20 +87,20 @@ def setup_database():
         print("Reading setup.sql...")
         with open("database/setup.sql", "r", encoding="utf-8") as f:
             sql_script = f.read()
-        
-        # Split and execute SQL commands
-        print("Executing SQL commands...")
-        commands = sql_script.split(';')
-        
-        for i, command in enumerate(commands):
-            command = command.strip()
-            if command and not command.startswith('--'):
-                try:
-                    cursor.execute(command)
-                    print(f"  ✓ Command {i+1} executed")
-                except mysql.connector.Error as err:
-                    print(f"  ⚠️ Command {i+1} warning: {err}")
-        
+
+        print("Executing setup.sql...")
+        execute_sql_script(cursor, sql_script)
+
+        # Load sample data if available
+        sample_data_path = os.path.join('database', 'sampledata.sql')
+        if os.path.exists(sample_data_path):
+            print("Reading sampledata.sql...")
+            with open(sample_data_path, 'r', encoding='utf-8') as f:
+                sample_script = f.read()
+
+            print("Loading sample data...")
+            execute_sql_script(cursor, sample_script)
+
         conn.commit()
         print("\n" + "=" * 50)
         print("✅ Database setup COMPLETE!")

@@ -81,21 +81,24 @@ cd business-intelligence-dashboard
 # 2. Install Python packages
 pip install -r requirements.txt
 
-# 3. Set up your database
-mysql -u root -p < database/setup.sql
+# 3. Make sure WAMP is running and MySQL is available
+#    WAMP should show the green icon and MySQL should be up.
 
-# 4. Run the application
+# 4. Set up the database and load sample data
+python setup_db.py
+
+# 5. Run the application
 python run.py
 
-# 5. Open in browser
+# 6. Open in browser
 # Go to: http://localhost:5000
 
 ```
 
 Default Login (for testing):
-Manager: admin@test.com / password123
-
-Staff: staff@test.com / password123
+Admin: admin@business.com / admin123
+Manager: manager@business.com / admin123
+Staff: staff@business.com / admin123
 
 (Change these immediately if deploying for real use!)
 

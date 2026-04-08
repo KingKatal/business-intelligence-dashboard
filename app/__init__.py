@@ -8,16 +8,28 @@ import os
 db = SQLAlchemy()
 login_manager = LoginManager()
 
-def create_app(config_name='default'):
-    """Application factory function"""
+def create_app(config_name=None):
+    """Application factory function
+
+    Accepts either:
+    - A config key string (e.g. 'testing', 'development') to select from `config` dict
+    - A dict-like object to update `app.config` (for tests)
+    - None to use default
+    """
     # Serve static files from the project-level `static/` folder
     project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     static_dir = os.path.join(project_root, 'static')
     app = Flask(__name__, static_folder=static_dir, static_url_path='/static')
     
     # Load configuration
-    from config import config
-    app.config.from_object(config[config_name])
+    from config import config as config_map
+    if isinstance(config_name, str):
+        cfg = config_map.get(config_name, config_map['default'])
+        app.config.from_object(cfg)
+    elif isinstance(config_name, dict):
+        app.config.update(config_name)
+    else:
+        app.config.from_object(config_map['default'])
     
     # Initialize extensions
     db.init_app(app)
