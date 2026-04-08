@@ -135,7 +135,7 @@ business-intelligence-dashboard/
 └── README.md           # This file!
 ```
 
-```bash
+
 🔧 What I'm Working On Now
 This Week's Goals:
 Set up basic Flask application
@@ -168,6 +168,7 @@ Testing saves time - Writing tests feels slow but catches bugs early
 Documentation is key - If I don't write it down, I forget why I did something
 
 📚 Challenges I Faced (And How I Solved Them)
+
 Problem 1: Making Data Update Live
 Challenge: How to show new sales without refreshing the page
 Solution: Used JavaScript to fetch data every 5 minutes
@@ -191,14 +192,21 @@ Impact: Create a tool that is genuinely useful. If even one small business owner
 
 👨‍💻 About Me
 Name: Gomezgani Chirwa
+
 Program: Bachelor of Management Information Systems (Year 3)
+
 University: Malawi University of Business and Applied Sciences (MUBAS)
+
 Focus: I'm passionate about the space where business strategy meets practical technology—figuring out what tools a business actually needs and then building them.
+
 Career Goal: To design and implement information systems that solve real, everyday challenges for businesses and organizations across Africa.
 
 📞 Contact Me:
+
 Email: chirwagomez@gmail.com (personal)
+
 Phone/WhatsApp: +256 880 725 061
+
 LinkedIn: linkedin.com/in/gomezgani-chirwa-4b6286270
 
 
@@ -214,11 +222,13 @@ For Academic Purposes:
 This is my original work for educational purposes at MUBAS. All code is written by me unless I specifically credit someone else in the comments.
 
 For Business Use:
+
 This is a learning project and might have bugs. If you want to use it for a real business, please test thoroughly first and consider getting help from an experienced developer.
 
 License:
+
 This project is under the MIT License - meaning you can use, modify and share it, but I'm not responsible if something goes wrong.
-```
+
 <div align="center">
 🎓 Student by Day, Coder by Night
 "The best way to learn is to build something you care about."
