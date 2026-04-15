@@ -32,14 +32,10 @@ Flask-SQLAlchemy==3.1.1
 Flask-Login==0.6.3
 mysql-connector-python==8.1.0
 python-dotenv==1.0.0
-gunicorn==21.2.0  # <-- Important for production!
+gunicorn==21.2.0  # <-- Already added for production!
 ```
 
-If `gunicorn` is missing, add it:
-```bash
-pip install gunicorn
-pip freeze > requirements.txt
-```
+**✅ Gunicorn is already included in your requirements.txt - no action needed!**
 
 ---
 
