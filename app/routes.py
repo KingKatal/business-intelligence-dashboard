@@ -263,3 +263,166 @@ def calculate_percentage_change(current, previous):
     if previous == 0:
         return 100 if current > 0 else 0
     return round(((current - previous) / previous) * 100, 2)
+
+# ==================== INVENTORY API ENDPOINTS ====================
+
+@main_bp.route('/api/inventory-data')
+@login_required
+def inventory_data():
+    """API endpoint for inventory data with summary"""
+    products = Product.query.order_by(Product.name).all()
+
+    # Calculate summary statistics
+    total_stock_value = sum((p.stock_quantity or 0) * (p.cost or 0) for p in products)
+    low_stock_count = sum(1 for p in products if (p.stock_quantity or 0) < (p.min_stock or 0))
+    out_of_stock_count = sum(1 for p in products if (p.stock_quantity or 0) == 0)
+
+    # Format products for JSON
+    products_data = []
+    for product in products:
+        products_data.append({
+            'id': product.id,
+            'name': product.name,
+            'description': product.description,
+            'category': product.category,
+            'cost_price': float(product.cost or 0),
+            'selling_price': float(product.price),
+            'stock_quantity': product.stock_quantity,
+            'min_stock_level': product.min_stock,
+            'profit_margin': product.profit_margin(),
+            'needs_restock': product.needs_restock()
+        })
+
+    return jsonify({
+        'products': products_data,
+        'summary': {
+            'total_products': len(products),
+            'total_stock_value': total_stock_value,
+            'low_stock_count': low_stock_count,
+            'out_of_stock_count': out_of_stock_count
+        }
+    })
+
+@main_bp.route('/api/inventory-data', methods=['POST'])
+@login_required
+def create_inventory_product():
+    """Create a new product via inventory API"""
+    try:
+        data = request.get_json()
+        name = data.get('name')
+        description = data.get('description')
+        category = data.get('category')
+        stock_quantity = int(data.get('stock_quantity', 0))
+        cost_price = float(data.get('cost_price', 0))
+        selling_price = float(data.get('selling_price', 0))
+        min_stock_level = int(data.get('min_stock_level', 10))
+
+        if not name or selling_price <= 0:
+            return jsonify({'success': False, 'message': 'Name and valid selling price are required'}), 400
+
+        product = Product(
+            name=name,
+            description=description,
+            category=category,
+            price=selling_price,
+            cost=cost_price,
+            stock_quantity=stock_quantity,
+            min_stock=min_stock_level
+        )
+
+        db.session.add(product)
+        db.session.commit()
+
+        return jsonify({'success': True, 'message': 'Product created successfully', 'product_id': product.id})
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+@main_bp.route('/api/inventory-data/<int:product_id>', methods=['GET'])
+@login_required
+def get_inventory_product(product_id):
+    """Get a specific product"""
+    try:
+        product = Product.query.get_or_404(product_id)
+
+        return jsonify({
+            'success': True,
+            'product': {
+                'id': product.id,
+                'name': product.name,
+                'description': product.description,
+                'category': product.category,
+                'cost_price': float(product.cost or 0),
+                'selling_price': float(product.price),
+                'stock_quantity': product.stock_quantity,
+                'min_stock_level': product.min_stock
+            }
+        })
+
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+@main_bp.route('/api/inventory-data/<int:product_id>', methods=['PUT'])
+@login_required
+def update_inventory_product(product_id):
+    """Update a product via inventory API"""
+    try:
+        product = Product.query.get_or_404(product_id)
+        data = request.get_json()
+
+        product.name = data.get('name', product.name)
+        product.description = data.get('description', product.description)
+        product.category = data.get('category', product.category)
+        product.cost = float(data.get('cost_price', product.cost))
+        product.price = float(data.get('selling_price', product.price))
+        product.min_stock = int(data.get('min_stock_level', product.min_stock))
+
+        db.session.commit()
+
+        return jsonify({'success': True, 'message': 'Product updated successfully'})
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+@main_bp.route('/api/inventory-data/<int:product_id>', methods=['DELETE'])
+@login_required
+def delete_inventory_product(product_id):
+    """Delete a product via inventory API"""
+    try:
+        product = Product.query.get_or_404(product_id)
+
+        db.session.delete(product)
+        db.session.commit()
+
+        return jsonify({'success': True, 'message': 'Product deleted successfully'})
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+@main_bp.route('/api/inventory-data/<int:product_id>/restock', methods=['PATCH'])
+@login_required
+def restock_inventory_product(product_id):
+    """Restock a product via inventory API"""
+    try:
+        product = Product.query.get_or_404(product_id)
+        data = request.get_json()
+
+        quantity = int(data.get('quantity', 0))
+        if quantity <= 0:
+            return jsonify({'success': False, 'message': 'Invalid quantity'}), 400
+
+        product.stock_quantity += quantity
+        db.session.commit()
+
+        return jsonify({
+            'success': True,
+            'message': f'Product restocked with {quantity} units',
+            'new_stock': product.stock_quantity
+        })
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500

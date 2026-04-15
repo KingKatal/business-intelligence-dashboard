@@ -46,7 +46,7 @@
         <div class="card border-primary">
             <div class="card-body">
                 <h6 class="card-subtitle mb-2 text-muted">Total Products</h6>
-                <h3 class="card-title">{{ products|length }}</h3>
+                <h3 class="card-title" id="totalProducts">{{ products|length }}</h3>
                 <small class="text-muted">Different items in stock</small>
             </div>
         </div>
@@ -55,7 +55,7 @@
         <div class="card border-success">
             <div class="card-body">
                 <h6 class="card-subtitle mb-2 text-muted">Total Stock Value</h6>
-                <h3 class="card-title">MWK {{ "%.2f"|format(total_stock_value) }}</h3>
+                <h3 class="card-title" id="totalStockValue">MWK {{ "%.2f"|format(total_stock_value) }}</h3>
                 <small class="text-muted">At cost price</small>
             </div>
         </div>
@@ -64,7 +64,7 @@
         <div class="card border-warning">
             <div class="card-body">
                 <h6 class="card-subtitle mb-2 text-muted">Low Stock Items</h6>
-                <h3 class="card-title">{{ low_stock_count }}</h3>
+                <h3 class="card-title" id="lowStockCount">{{ low_stock_count }}</h3>
                 <small class="text-muted">Need restocking</small>
             </div>
         </div>
@@ -73,7 +73,7 @@
         <div class="card border-info">
             <div class="card-body">
                 <h6 class="card-subtitle mb-2 text-muted">Out of Stock</h6>
-                <h3 class="card-title">{{ out_of_stock_count }}</h3>
+                <h3 class="card-title" id="outOfStockCount">{{ out_of_stock_count }}</h3>
                 <small class="text-muted">No stock remaining</small>
             </div>
         </div>
@@ -133,7 +133,7 @@
             <div class="card-body">
                 {% if products %}
                 <div class="table-responsive">
-                    <table class="table table-hover">
+                    <table class="table table-hover" id="inventoryTable">
                         <thead>
                             <tr>
                                 <th>Product</th>
@@ -148,59 +148,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for product in products %}
-                            <tr class="{% if product.stock_quantity == 0 %}stock-out{% elif product.needs_restock() %}stock-low{% else %}stock-good{% endif %}">
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="me-3 bg-light rounded p-2">
-                                            <i class="bi bi-box-seam" style="font-size: 1.5rem;"></i>
-                                        </div>
-                                        <div>
-                                            <strong>{{ product.name }}</strong><br>
-                                            <small class="text-muted">{{ product.description[:50] }}...</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="badge bg-secondary">{{ product.category|default('Uncategorized') }}</span>
-                                </td>
-                                <td>MWK {{ "%.2f"|format(product.cost) }}</td>
-                                <td>
-                                    <strong>MWK {{ "%.2f"|format(product.price) }}</strong>
-                                </td>
-                                <td>
-                                    <h5 class="mb-0">{{ product.stock_quantity }}</h5>
-                                </td>
-                                <td>{{ product.min_stock }}</td>
-                                <td>
-                                    <span class="badge {% if product.profit_margin() > 50 %}bg-success{% elif product.profit_margin() > 20 %}bg-primary{% else %}bg-warning{% endif %}">
-                                        {{ "%.1f"|format(product.profit_margin()) }}%
-                                    </span>
-                                </td>
-                                <td>
-                                    {% if product.stock_quantity == 0 %}
-                                    <span class="badge bg-danger">Out of Stock</span>
-                                    {% elif product.needs_restock() %}
-                                    <span class="badge bg-warning text-dark">Low Stock</span>
-                                    {% else %}
-                                    <span class="badge bg-success">In Stock</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    <div class="btn-group btn-group-sm">
-                                        <button class="btn btn-outline-primary" onclick="editProduct({{ product.id }})">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button class="btn btn-outline-success" onclick="restockProduct({{ product.id }})">
-                                            <i class="bi bi-plus-circle"></i>
-                                        </button>
-                                        <button class="btn btn-outline-info" onclick="viewProduct({{ product.id }})">
-                                            <i class="bi bi-eye"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% endfor %}
+                            <!-- Products will be loaded dynamically -->
                         </tbody>
                     </table>
                 </div>
@@ -228,19 +176,19 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form id="productForm">
+                <form id="addProductForm">
                     <div class="mb-3">
                         <label class="form-label">Product Name *</label>
-                        <input type="text" class="form-control" required>
+                        <input type="text" class="form-control" name="name" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Description</label>
-                        <textarea class="form-control" rows="2"></textarea>
+                        <textarea class="form-control" name="description" rows="2"></textarea>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Category</label>
-                            <select class="form-select">
+                            <select class="form-select" name="category">
                                 <option value="">Select Category</option>
                                 <option>Electronics</option>
                                 <option>Clothing</option>
@@ -251,65 +199,159 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Initial Stock</label>
-                            <input type="number" class="form-control" value="0" min="0">
+                            <input type="number" class="form-control" name="stock_quantity" value="0" min="0">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Cost Price (MWK) *</label>
-                            <input type="number" class="form-control" step="0.01" required>
+                            <input type="number" class="form-control" name="cost_price" step="0.01" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Selling Price (MWK) *</label>
-                            <input type="number" class="form-control" step="0.01" required>
+                            <input type="number" class="form-control" name="selling_price" step="0.01" required>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Minimum Stock Level</label>
-                        <input type="number" class="form-control" value="10" min="1">
+                        <input type="number" class="form-control" name="min_stock_level" value="10" min="1">
                         <div class="form-text">Get alerts when stock goes below this</div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="saveProduct()">Save Product</button>
+                <button type="button" class="btn btn-primary" onclick="addProduct()">Save Product</button>
             </div>
         </div>
     </div>
 </div>
-{% endblock %}
+
+<!-- Edit Product Modal -->
+<div class="modal fade" id="editProductModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editProductForm">
+                    <input type="hidden" id="editProductId" name="id">
+                    <div class="mb-3">
+                        <label class="form-label">Product Name *</label>
+                        <input type="text" class="form-control" id="editProductName" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" id="editProductDescription" name="description" rows="2"></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Category</label>
+                            <select class="form-select" id="editProductCategory" name="category">
+                                <option value="">Select Category</option>
+                                <option>Electronics</option>
+                                <option>Clothing</option>
+                                <option>Food</option>
+                                <option>Stationery</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Current Stock</label>
+                            <input type="number" class="form-control" id="editProductStock" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Cost Price (MWK) *</label>
+                            <input type="number" class="form-control" id="editProductCost" name="cost_price" step="0.01" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Selling Price (MWK) *</label>
+                            <input type="number" class="form-control" id="editProductPrice" name="selling_price" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Minimum Stock Level</label>
+                        <input type="number" class="form-control" id="editProductMinStock" name="min_stock_level" min="1">
+                        <div class="form-text">Get alerts when stock goes below this</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="updateProduct()">Update Product</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Restock Modal -->
+<div class="modal fade" id="restockModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Restock Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="restockForm">
+                    <input type="hidden" id="restockProductId" name="id">
+                    <div class="mb-3">
+                        <label class="form-label">Product</label>
+                        <input type="text" class="form-control" id="restockProductName" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Current Stock</label>
+                        <input type="number" class="form-control" id="restockCurrentStock" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Quantity to Add *</label>
+                        <input type="number" class="form-control" id="restockQuantity" name="quantity" min="1" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="processRestock()">Restock</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Product Modal -->
+<div class="modal fade" id="viewProductModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Product Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>ID:</strong> <span id="viewProductId"></span></p>
+                        <p><strong>Name:</strong> <span id="viewProductName"></span></p>
+                        <p><strong>Description:</strong> <span id="viewProductDescription"></span></p>
+                        <p><strong>Category:</strong> <span id="viewProductCategory"></span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Stock Quantity:</strong> <span id="viewProductStock"></span></p>
+                        <p><strong>Cost Price:</strong> <span id="viewProductCost"></span></p>
+                        <p><strong>Selling Price:</strong> <span id="viewProductSelling"></span></p>
+                        <p><strong>Min Stock Level:</strong> <span id="viewProductMinStock"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% block extra_js %}
-<script>
-    function filterInventory() {
-        const search = document.getElementById('searchProducts').value;
-        const category = document.getElementById('categoryFilter').value;
-        const stock = document.getElementById('stockFilter').value;
-        
-        alert(`Filtering: Search="${search}", Category="${category}", Stock="${stock}"`);
-        // Real implementation would filter the table
-    }
-    
-    function editProduct(id) {
-        alert(`Editing product #${id}\n\nThis would open edit form.`);
-    }
-    
-    function restockProduct(id) {
-        alert(`Restocking product #${id}\n\nThis would open restock form.`);
-    }
-    
-    function viewProduct(id) {
-        alert(`Viewing product #${id}\n\nThis would show product details.`);
-    }
-    
-    function exportInventory() {
-        alert('Exporting inventory to CSV file...\n\nThis would download a CSV file.');
-    }
-    
-    function saveProduct() {
-        alert('Product saved successfully!\n\nIn real implementation, this would send data to server.');
-        $('#addProductModal').modal('hide');
-    }
-</script>
+<script src="{{ url_for('static', filename='js/inventory.js') }}"></script>
 {% endblock %}
