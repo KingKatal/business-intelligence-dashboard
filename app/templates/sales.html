@@ -73,7 +73,7 @@
         <div class="card bg-primary text-white">
             <div class="card-body">
                 <h6 class="card-subtitle mb-2">Total Sales</h6>
-                <h3 class="card-title">MWK {{ "%.2f"|format(total_sales|default(0)) }}</h3>
+                <h3 class="card-title" id="totalSales">MWK {{ "%.2f"|format(total_sales|default(0)) }}</h3>
                 <small>All time</small>
             </div>
         </div>
@@ -82,7 +82,7 @@
         <div class="card bg-success text-white">
             <div class="card-body">
                 <h6 class="card-subtitle mb-2">Today's Sales</h6>
-                <h3 class="card-title">MWK {{ "%.2f"|format(today_total|default(0)) }}</h3>
+                <h3 class="card-title" id="todaySales">MWK {{ "%.2f"|format(today_total|default(0)) }}</h3>
                 <small>{{ today_date }}</small>
             </div>
         </div>

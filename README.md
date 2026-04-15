@@ -2,12 +2,12 @@
 
 <div align="center">
 
-![Python](https://img.shields.io/badge/python-3.9+-blue.svg)
-![Flask](https://img.shields.io/badge/flask-2.3.x-green.svg)
+![Python](https://img.shields.io/badge/python-3.14+-blue.svg)
+![Flask](https://img.shields.io/badge/flask-3.1.x-green.svg)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-orange)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![MUBAS Student](https://img.shields.io/badge/MUBAS-3rd_Year_MIS-purple)
-![Status](https://img.shields.io/badge/status-in_development-yellow)
+![Status](https://img.shields.io/badge/status-completed-brightgreen)
 
 **Turning Business Data into Smart Decisions - A Student Project**
 
@@ -38,9 +38,11 @@ This year semester 1 at MUBAS, I'm taking 6 modules. This project uses something
 
 ### For Business Owners:
 - **See sales right now** - No waiting for end-of-month reports
-- **Know what's in stock** - Get warnings before you run out
+- **Know what's in stock** - Get warnings before you run out with full inventory management
 - **Understand customers** - See who buys most and when
 - **Track money** - Income, expenses, and profits all in one place
+- **Manage products** - Add, edit, delete, and restock inventory items
+- **Export data** - Download reports and inventory lists as CSV files
 
 ### Technical Stuff I Implemented:
 - **Live updates** - Data refreshes every few minutes
@@ -48,18 +50,45 @@ This year semester 1 at MUBAS, I'm taking 6 modules. This project uses something
 - **PDF reports** - One-click download for meetings
 - **Mobile friendly** - Check your business from your phone
 - **Backup system** - Automatic daily database backups
+- **Full CRUD operations** - Complete Create, Read, Update, Delete for all data
+- **Advanced filtering** - Search and filter data instantly
+- **Real-time inventory tracking** - Stock levels update immediately
 
 ## 📸 See It in Action
 
-*(I'll add screenshots here once I build the interface)*
+### Desktop Screenshots
+**Dashboard Overview:**
+![Dashboard Main View](screenshots/desktop/dashboard-main.png)
+*Main dashboard showing sales charts, inventory status, and key metrics*
 
-**Dashboard View:**
-[ Sales Chart Image ]
-[ Inventory Status Image ]
-[ Recent Activity Image ]
+**Sales Management:**
+![Sales Page](screenshots/desktop/sales-management.png)
+*Complete sales management with filtering, search, and data export*
 
-**Mobile View:**
-[ Phone Screenshot ]
+**Inventory Management:**
+![Inventory Page](screenshots/desktop/inventory-management.png)
+*Full inventory CRUD operations with stock alerts and restocking*
+
+**Login Interface:**
+![Login Page](screenshots/desktop/login-interface.png)
+*Secure authentication with role-based access*
+
+### Mobile Screenshots
+**Mobile Dashboard:**
+![Mobile Dashboard](screenshots/mobile/dashboard-mobile.png)
+*Responsive dashboard optimized for mobile devices*
+
+**Mobile Navigation:**
+![Mobile Menu](screenshots/mobile/mobile-navigation.png)
+*Mobile-friendly navigation and user interface*
+
+**Mobile Sales View:**
+![Mobile Sales](screenshots/mobile/sales-mobile.png)
+*Sales management accessible on mobile devices*
+
+---
+
+*📝 Note: Screenshots will be added as you capture them. Place desktop screenshots in `screenshots/desktop/` and mobile screenshots in `screenshots/mobile/` folders.*
 
 
 ## 🛠️ How to Set It Up (For Developers)
@@ -67,7 +96,7 @@ This year semester 1 at MUBAS, I'm taking 6 modules. This project uses something
 If you're a student or developer who wants to run this locally:
 
 ### What You Need First:
-- Python 3.9 or higher
+- Python 3.14 or higher
 - MySQL installed on your computer
 - Git (to download the project)
 
@@ -96,9 +125,10 @@ python run.py
 ```
 
 Default Login (for testing):
-Admin: admin@business.com / admin123
-Manager: manager@business.com / admin123
-Staff: staff@business.com / admin123
+- **Admin:** admin / admin123
+- **Manager:** manager1 / manager123
+- **Staff:** staff1 / staff123
+- **Demo User:** Gomez / gomez123
 
 (Change these immediately if deploying for real use!)
 
@@ -107,28 +137,42 @@ Staff: staff@business.com / admin123
 📁 How the Project is Organized
 
  ```bash
-
 business-intelligence-dashboard/
 ├── app/                    # Main application folder
 │   ├── __init__.py        # Makes this a Python package
-│   ├── routes.py          # All website pages
+│   ├── routes.py          # All website pages and API endpoints
 │   ├── models.py          # Database tables structure
 │   ├── auth.py            # Login and security
 │   └── utils.py           # Helper functions
 ├── templates/             # HTML pages
-│   ├── dashboard.html     # Main dashboard
+│   ├── base.html          # Base template with navigation
+│   ├── dashboard.html     # Main dashboard with charts
 │   ├── login.html         # Login page
-│   └── reports.html       # Reports page
+│   ├── sales.html         # Sales management page
+│   ├── inventory.html     # Inventory management page
+│   ├── customers.html     # Customer management
+│   └── reports.html       # Reports and analytics
 ├── static/               # CSS, JavaScript, images
 │   ├── css/
+│   │   ├── style.css      # Main stylesheet
+│   │   └── dashboard.css  # Dashboard-specific styles
 │   ├── js/
+│   │   ├── main.js        # Common JavaScript functions
+│   │   ├── dashboard.js   # Dashboard charts and updates
+│   │   ├── charts.js      # Chart.js configurations
+│   │   └── inventory.js   # Inventory management functions
 │   └── images/
 ├── database/             # Database files
 │   ├── setup.sql         # Creates tables
-│   └── sampledata.sql    # Example data
+│   ├── sampledata.sql    # Example data
+│   └── backup_script.py  # Database backup utility
+├── screenshots/          # Project screenshots
+│   ├── desktop/          # Desktop view screenshots
+│   └── mobile/           # Mobile view screenshots
 ├── tests/               # Testing files
 │   ├── test_auth.py     # Login tests
-│   └── test_dashboard.py # Dashboard tests
+│   ├── test_models.py   # Database model tests
+│   └── test_routes.py   # Route tests
 ├── requirements.txt     # Python packages needed
 ├── config.py           # Settings (don't share publicly!)
 ├── run.py              # Starts the application
@@ -136,20 +180,38 @@ business-intelligence-dashboard/
 ```
 
 
-🔧 What I'm Working On Now
-This Week's Goals:
-Set up basic Flask application
-Create database tables
-Design main dashboard layout
-Add sales chart
-Create login system
-Write tests for core features
+🔧 What's Completed ✅
 
-Coming Soon:
-Email alerts for low stock
-Customer loyalty tracking
-Expense categorization
-Multi-business support (for franchises)
+**Core Features:**
+- ✅ Basic Flask application with modern Python 3.14
+- ✅ Complete database design with MySQL
+- ✅ Professional dashboard layout with Bootstrap 5
+- ✅ Interactive sales charts and analytics
+- ✅ Secure user authentication system
+- ✅ Role-based access control (Admin, Manager, Staff)
+- ✅ Comprehensive testing suite
+
+**Advanced Features:**
+- ✅ Full inventory management with CRUD operations
+- ✅ Real-time data updates and filtering
+- ✅ CSV export functionality
+- ✅ Mobile-responsive design
+- ✅ Automated database backups
+- ✅ RESTful API endpoints
+
+**Business Intelligence:**
+- ✅ Sales trend analysis and forecasting
+- ✅ Customer behavior insights
+- ✅ Profit margin calculations
+- ✅ Stock level monitoring and alerts
+- ✅ Financial reporting capabilities
+
+**Coming Soon:**
+- Email alerts for low stock
+- Customer loyalty tracking
+- Advanced expense categorization
+- Multi-business support (for franchises)
+- API documentation
 
 🤝 Want to Help or Learn?
 I'm still learning, so if you see something I could do better:
@@ -169,17 +231,29 @@ Documentation is key - If I don't write it down, I forget why I did something
 
 📚 Challenges I Faced (And How I Solved Them)
 
-Problem 1: Making Data Update Live
-Challenge: How to show new sales without refreshing the page
-Solution: Used JavaScript to fetch data every 5 minutes
+**Problem 1: Python 3.14 Compatibility Issues**
+Challenge: Password hashing broke when upgrading to Python 3.14
+Solution: Updated Flask and Werkzeug versions, regenerated password hashes with proper format
 
-Problem 2: Slow Database Queries
+**Problem 2: Making Data Update Live**
+Challenge: How to show new sales without refreshing the page
+Solution: Used JavaScript to fetch data every 5 minutes with AJAX calls
+
+**Problem 3: Slow Database Queries**
 Challenge: Loading all sales history took 10+ seconds
 Solution: Added database indexes and cached frequent queries
 
-Problem 3: Different User Views
+**Problem 4: Complex Inventory Management**
+Challenge: Building full CRUD operations for inventory with real-time updates
+Solution: Created comprehensive API endpoints and dynamic JavaScript interface
+
+**Problem 5: Different User Views**
 Challenge: Managers need full access, staff need limited view
-Solution: Created role-based permissions system
+Solution: Created role-based permissions system with Flask-Login
+
+**Problem 6: Mobile Responsiveness**
+Challenge: Ensuring the dashboard works perfectly on phones and tablets
+Solution: Used Bootstrap 5 responsive grid system and mobile-first design
 
 🎯 My Goals for This Project
 Academic: Demonstrate a deep, practical understanding of full-stack development for my Programming III (CIS-PRO-313) assessment.
