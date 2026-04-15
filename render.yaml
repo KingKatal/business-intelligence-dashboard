@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: bi-dashboard
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn 'app:create_app()'"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.14
+      - key: FLASK_ENV
+        value: production
+      - key: DEBUG
+        value: false
