@@ -59,11 +59,11 @@ This year semester 1 at MUBAS, I'm taking 6 modules. This project uses something
 ### Desktop Screenshots
 **Dashboard Overview:**
 ![Dashboard Main View](screenshots/desktop/dashboard.png)
-*Main dashboard showing sales charts, inventory status, and key metrics*
+*Main dashboard showing sales charts, inventory status and key metrics*
 
 **Sales Management:**
 ![Sales Page](screenshots/desktop/sales.png)
-*Complete sales management with filtering, search, and data export*
+*Complete sales management with filtering, search and data export*
 
 **Inventory Management:**
 ![Inventory Page](screenshots/desktop/inventory.png)
