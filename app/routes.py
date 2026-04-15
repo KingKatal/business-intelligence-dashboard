@@ -234,9 +234,11 @@ def get_monthly_sales_data():
     dialect_name = db.engine.dialect.name
     if dialect_name == 'sqlite':
         month_expr = db.func.strftime('%Y-%m', Sale.sale_date).label('month')
+    elif dialect_name == 'postgresql':
+        month_expr = db.func.to_char(Sale.sale_date, 'YYYY-MM').label('month')
     else:
         month_expr = db.func.date_format(Sale.sale_date, '%Y-%m').label('month')
-
+        
     sales_by_month = db.session.query(
         month_expr,
         db.func.sum(Sale.total_amount).label('total')
