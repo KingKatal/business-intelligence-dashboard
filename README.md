@@ -58,37 +58,65 @@ This year semester 1 at MUBAS, I'm taking 6 modules. This project uses something
 
 ### Desktop Screenshots
 **Dashboard Overview:**
-![Dashboard Main View](screenshots/desktop/dashboard-main.png)
+![Dashboard Main View](screenshots/desktop/dashboard.png)
 *Main dashboard showing sales charts, inventory status, and key metrics*
 
 **Sales Management:**
-![Sales Page](screenshots/desktop/sales-management.png)
+![Sales Page](screenshots/desktop/sales.png)
 *Complete sales management with filtering, search, and data export*
 
 **Inventory Management:**
-![Inventory Page](screenshots/desktop/inventory-management.png)
+![Inventory Page](screenshots/desktop/inventory.png)
 *Full inventory CRUD operations with stock alerts and restocking*
 
+**Customer Management:**
+![Customer Page](screenshots/desktop/customer.png)
+*Customer database with contact information and purchase history*
+
+**Reports & Analytics:**
+![Reports Page](screenshots/desktop/reports%20and%20analysis.png)
+*Comprehensive business reports and data analysis tools*
+
 **Login Interface:**
-![Login Page](screenshots/desktop/login-interface.png)
+![Login Page](screenshots/desktop/login.png)
 *Secure authentication with role-based access*
 
 ### Mobile Screenshots
 **Mobile Dashboard:**
-![Mobile Dashboard](screenshots/mobile/dashboard-mobile.png)
+![Mobile Dashboard](screenshots/mobile/dashboard.png)
 *Responsive dashboard optimized for mobile devices*
 
-**Mobile Navigation:**
-![Mobile Menu](screenshots/mobile/mobile-navigation.png)
-*Mobile-friendly navigation and user interface*
+**Mobile Sales Management:**
+![Mobile Sales 1](screenshots/mobile/sales1.png)
+*Sales management interface on mobile devices*
 
-**Mobile Sales View:**
-![Mobile Sales](screenshots/mobile/sales-mobile.png)
-*Sales management accessible on mobile devices*
+**Mobile Sales Details:**
+![Mobile Sales 2](screenshots/mobile/sales2.png)
+*Detailed sales view with filtering options*
+
+**Mobile Inventory:**
+![Mobile Inventory](screenshots/mobile/inventory.png)
+*Inventory management accessible on mobile*
+
+**Mobile Customer View:**
+![Mobile Customer](screenshots/mobile/customer.png)
+*Customer management on mobile devices*
+
+**Mobile Reports:**
+![Mobile Reports 1](screenshots/mobile/reports.png)
+*Business reports accessible on mobile*
+
+**Mobile Reports Details:**
+![Mobile Reports 2](screenshots/mobile/reports2.png)
+*Detailed analytics and reporting on mobile*
+
+**Mobile Login:**
+![Mobile Login](screenshots/mobile/login.png)
+*Mobile-friendly authentication interface*
 
 ---
 
-*📝 Note: Screenshots will be added as you capture them. Place desktop screenshots in `screenshots/desktop/` and mobile screenshots in `screenshots/mobile/` folders.*
+*📸 Screenshots captured from the live application showcasing all major features and mobile responsiveness.*
 
 
 ## 🛠️ How to Set It Up (For Developers)
