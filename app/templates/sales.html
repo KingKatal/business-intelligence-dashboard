@@ -91,7 +91,7 @@
         <div class="card bg-info text-white">
             <div class="card-body">
                 <h6 class="card-subtitle mb-2">Total Transactions</h6>
-                <h3 class="card-title">{{ sales|length }}</h3>
+                <h3 class="card-title" id="totalTransactions">{{ sales|length }}</h3>
                 <small>Completed sales</small>
             </div>
         </div>
@@ -100,7 +100,7 @@
         <div class="card bg-warning text-dark">
             <div class="card-body">
                 <h6 class="card-subtitle mb-2">Avg. Transaction</h6>
-                <h3 class="card-title">MWK {{ "%.2f"|format(avg_transaction|default(0)) }}</h3>
+                <h3 class="card-title" id="avgTransaction">MWK {{ "%.2f"|format(avg_transaction|default(0)) }}</h3>
                 <small>Per sale</small>
             </div>
         </div>
@@ -117,56 +117,19 @@
             <div class="card-body">
                 {% if sales %}
                 <div class="table-responsive">
-                    <table class="table table-hover">
+                    <table class="table table-hover" id="salesTable">
                         <thead>
                             <tr>
                                 <th>Invoice #</th>
-                                <th>Date & Time</th>
+                                <th>Date</th>
                                 <th>Customer</th>
-                                <th>Items</th>
-                                <th>Total Amount</th>
+                                <th>Amount</th>
                                 <th>Payment</th>
-                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for sale in sales %}
-                            <tr>
-                                <td>
-                                    <strong>{{ sale.invoice_number }}</strong>
-                                </td>
-                                <td>
-                                    {{ sale.sale_date.strftime('%Y-%m-%d') }}<br>
-                                    <small class="text-muted">{{ sale.sale_date.strftime('%H:%M') }}</small>
-                                </td>
-                                <td>
-                                    {% if sale.customer %}
-                                        {{ sale.customer.name }}
-                                    {% else %}
-                                        <span class="text-muted">Walk-in</span>
-                                    {% endif %}
-                                </td>
-                                <td>{{ sale.items|length }} items</td>
-                                <td>
-                                    <strong>MWK {{ "%.2f"|format(sale.total_amount) }}</strong>
-                                </td>
-                                <td>
-                                    <span class="badge bg-secondary">{{ sale.payment_method|default('Cash') }}</span>
-                                </td>
-                                <td>
-                                    <span class="badge badge-paid">Paid</span>
-                                </td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary" onclick="viewSale({{ sale.id }})">
-                                        <i class="bi bi-eye"></i> View
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-success" onclick="printInvoice({{ sale.id }})">
-                                        <i class="bi bi-printer"></i> Print
-                                    </button>
-                                </td>
-                            </tr>
-                            {% endfor %}
+                            <!-- Sales data will be loaded dynamically -->
                         </tbody>
                     </table>
                 </div>
@@ -222,22 +185,8 @@
 {% endblock %}
 
 {% block extra_js %}
+<script src="{{ url_for('static', filename='js/sales.js') }}"></script>
 <script>
-    function filterSales() {
-        const dateFrom = document.getElementById('dateFrom').value;
-        const dateTo = document.getElementById('dateTo').value;
-        const customer = document.getElementById('customerFilter').value;
-        
-        alert(`Filtering sales from ${dateFrom} to ${dateTo}, customer: ${customer || 'All'}`);
-        // In real implementation, this would make an AJAX request
-    }
-    
-    function viewSale(saleId) {
-        alert(`Viewing sale #${saleId}\n\nThis would show sale details in a modal.`);
-    }
-    
-    function printInvoice(saleId) {
-        alert(`Printing invoice for sale #${saleId}\n\nThis would generate a printable receipt.`);
-    }
+    // Remove the old placeholder functions since they're now in sales.js
 </script>
 {% endblock %}

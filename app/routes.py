@@ -43,7 +43,25 @@ def dashboard():
 def sales():
     """Sales page"""
     sales_list = Sale.query.order_by(Sale.sale_date.desc()).all()
-    return render_template('sales.html', sales=sales_list)
+
+    # Calculate summary statistics
+    total_sales = sum(sale.total_amount for sale in sales_list) if sales_list else 0
+
+    # Today's sales
+    from datetime import date
+    today = date.today()
+    today_sales = [sale for sale in sales_list if sale.sale_date.date() == today]
+    today_total = sum(sale.total_amount for sale in today_sales) if today_sales else 0
+
+    # Average transaction
+    avg_transaction = total_sales / len(sales_list) if sales_list else 0
+
+    return render_template('sales.html',
+                         sales=sales_list,
+                         total_sales=total_sales,
+                         today_total=today_total,
+                         today_date=today.strftime('%B %d, %Y'),
+                         avg_transaction=avg_transaction)
 
 @main_bp.route('/inventory')
 @login_required
@@ -93,6 +111,51 @@ def sales_data():
     """API endpoint for sales chart data"""
     data = get_monthly_sales_data()
     return jsonify(data)
+
+@main_bp.route('/api/sales-list')
+@login_required
+def sales_list():
+    """API endpoint for sales list with summary data"""
+    sales_list = Sale.query.order_by(Sale.sale_date.desc()).all()
+
+    # Calculate summary statistics
+    total_sales = sum(sale.total_amount for sale in sales_list) if sales_list else 0
+
+    # Today's sales
+    from datetime import date
+    today = date.today()
+    today_sales = [sale for sale in sales_list if sale.sale_date.date() == today]
+    today_total = sum(sale.total_amount for sale in today_sales) if today_sales else 0
+
+    # Average transaction
+    avg_transaction = total_sales / len(sales_list) if sales_list else 0
+
+    # Format sales data for JSON
+    sales_data = []
+    for sale in sales_list:
+        sales_data.append({
+            'id': sale.id,
+            'invoice_number': sale.invoice_number,
+            'sale_date': sale.sale_date.isoformat(),
+            'customer_id': sale.customer_id,
+            'customer': {
+                'id': sale.customer.id,
+                'name': sale.customer.name
+            } if sale.customer else None,
+            'total_amount': float(sale.total_amount),
+            'payment_method': sale.payment_method,
+            'notes': sale.notes
+        })
+
+    return jsonify({
+        'sales': sales_data,
+        'summary': {
+            'total_sales': total_sales,
+            'today_total': today_total,
+            'total_transactions': len(sales_list),
+            'avg_transaction': avg_transaction
+        }
+    })
 
 @main_bp.route('/api/dashboard-stats')
 @login_required
