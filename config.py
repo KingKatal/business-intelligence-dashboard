@@ -7,13 +7,22 @@ class Config:
     # Basic Flask Config
     SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
     
-    # Database Config
-    DB_HOST = os.getenv('DB_HOST', 'localhost')
-    DB_USER = os.getenv('DB_USER', 'root')
-    DB_PASSWORD = os.getenv('DB_PASSWORD', '')
-    DB_NAME = os.getenv('DB_NAME', 'business_dashboard')
+    # Database Config — supports DATABASE_URL (Render) or individual vars (local)
+    DATABASE_URL = os.getenv('DATABASE_URL')
     
-    SQLALCHEMY_DATABASE_URI = f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
+    if DATABASE_URL:
+        # Fix Render's postgres:// to postgresql://
+        if DATABASE_URL.startswith('postgres://'):
+            DATABASE_URL = DATABASE_URL.replace('postgres://', 'postgresql://', 1)
+        SQLALCHEMY_DATABASE_URI = DATABASE_URL
+    else:
+        # Local MySQL fallback
+        DB_HOST = os.getenv('DB_HOST', 'localhost')
+        DB_USER = os.getenv('DB_USER', 'root')
+        DB_PASSWORD = os.getenv('DB_PASSWORD', '')
+        DB_NAME = os.getenv('DB_NAME', 'business_dashboard')
+        SQLALCHEMY_DATABASE_URI = f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
+    
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # Session Config
