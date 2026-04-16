@@ -3,13 +3,18 @@
 <div align="center">
 
 ![Python](https://img.shields.io/badge/python-3.14+-blue.svg)
-![Flask](https://img.shields.io/badge/flask-3.1.x-green.svg)
+![Flask](https://img.shields.io/badge/flask-2.3.3-green.svg)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-orange)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Render-blue)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![MUBAS Student](https://img.shields.io/badge/MUBAS-3rd_Year_MIS-purple)
 ![Status](https://img.shields.io/badge/status-completed-brightgreen)
 
 **Turning Business Data into Smart Decisions - A Student Project**
+
+🌐 **Live Demo:** https://business-intelligence-dashboard-mrv8.onrender.com/auth/login
+
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Site-brightgreen)](https://business-intelligence-dashboard-mrv8.onrender.com/auth/login)
 
 </div>
 
@@ -149,7 +154,6 @@ python run.py
 
 # 6. Open in browser
 # Go to: http://localhost:5000
-
 ```
 
 Default Login (for testing):
@@ -162,9 +166,9 @@ Default Login (for testing):
 
 
 
-📁 How the Project is Organized
+## 📁 How the Project is Organized
 
- ```bash
+```bash
 business-intelligence-dashboard/
 ├── app/                    # Main application folder
 │   ├── __init__.py        # Makes this a Python package
@@ -208,16 +212,17 @@ business-intelligence-dashboard/
 ```
 
 
-🔧 What's Completed ✅
+## 🔧 What's Completed ✅
 
 **Core Features:**
 - ✅ Basic Flask application with modern Python 3.14
-- ✅ Complete database design with MySQL
+- ✅ Complete database design with MySQL (local) and PostgreSQL (production)
 - ✅ Professional dashboard layout with Bootstrap 5
 - ✅ Interactive sales charts and analytics
 - ✅ Secure user authentication system
 - ✅ Role-based access control (Admin, Manager, Staff)
 - ✅ Comprehensive testing suite
+- ✅ Fully deployed and live on Render
 
 **Advanced Features:**
 - ✅ Full inventory management with CRUD operations
@@ -241,23 +246,23 @@ business-intelligence-dashboard/
 - Multi-business support (for franchises)
 - API documentation
 
-🤝 Want to Help or Learn?
+## 🤝 Want to Help or Learn?
 I'm still learning, so if you see something I could do better:
-Found a bug? Open an Issue
-Have an idea? Start a Discussion
-Want to add code? Make a Pull Request
+- Found a bug? Open an Issue
+- Have an idea? Start a Discussion
+- Want to add code? Make a Pull Request
 
 For fellow MUBAS students:
 If you're working on something similar or need help with your projects, feel free to reach out. We can learn together!
 
-🚀 What I've Learned So Far
+## 🚀 What I've Learned So Far
 Building this has taught me:
-Planning matters - I spent 2 days just designing the database before writing any code
-Small steps win - Instead of building everything at once, I add one feature at a time
-Testing saves time - Writing tests feels slow but catches bugs early
-Documentation is key - If I don't write it down, I forget why I did something
+- Planning matters - I spent 2 days just designing the database before writing any code
+- Small steps win - Instead of building everything at once, I add one feature at a time
+- Testing saves time - Writing tests feels slow but catches bugs early
+- Documentation is key - If I don't write it down, I forget why I did something
 
-📚 Challenges I Faced (And How I Solved Them)
+## 📚 Challenges I Faced (And How I Solved Them)
 
 **Problem 1: Python 3.14 Compatibility Issues**
 Challenge: Password hashing broke when upgrading to Python 3.14
@@ -283,62 +288,56 @@ Solution: Created role-based permissions system with Flask-Login
 Challenge: Ensuring the dashboard works perfectly on phones and tablets
 Solution: Used Bootstrap 5 responsive grid system and mobile-first design
 
-🎯 My Goals for This Project
-Academic: Demonstrate a deep, practical understanding of full-stack development for my Programming III (CIS-PRO-313) assessment.
+**Problem 7: MySQL vs PostgreSQL Compatibility**
+Challenge: Deploying to Render required switching from MySQL to PostgreSQL — MySQL-specific functions like `DATE_FORMAT()` broke on PostgreSQL
+Solution: Detected the database dialect at runtime and used the appropriate function (`TO_CHAR` for PostgreSQL, `DATE_FORMAT` for MySQL), so the app works on both environments seamlessly
 
-Portfolio: Create a substantial, working project that I can show to potential employers or clients as proof of my skills.
+## 🎯 My Goals for This Project
+**Academic:** Demonstrate a deep, practical understanding of full-stack development for my Programming III (CIS-PRO-313) assessment.
 
-Learning: Move from understanding concepts in isolation to knowing how to architect and deploy a complete, integrated system.
+**Portfolio:** Create a substantial, working project that I can show to potential employers or clients as proof of my skills.
 
-Impact: Create a tool that is genuinely useful. If even one small business owner finds it helpful, I'll consider that a huge success.
+**Learning:** Move from understanding concepts in isolation to knowing how to architect and deploy a complete, integrated system.
 
-👨‍💻 About Me
-Name: Gomezgani Chirwa
+**Impact:** Create a tool that is genuinely useful. If even one small business owner finds it helpful, I'll consider that a huge success.
 
-Program: Bachelor of Management Information Systems (Year 3)
+## 👨‍💻 About Me
+- **Name:** Gomezgani Chirwa
+- **Program:** Bachelor of Management Information Systems (Year 3)
+- **University:** Malawi University of Business and Applied Sciences (MUBAS)
+- **Focus:** I'm passionate about the space where business strategy meets practical technology—figuring out what tools a business actually needs and then building them.
+- **Career Goal:** To design and implement information systems that solve real, everyday challenges for businesses and organizations across Africa.
 
-University: Malawi University of Business and Applied Sciences (MUBAS)
+## 📞 Contact Me:
+- **Email:** chirwagomez@gmail.com
+- **Phone/WhatsApp:** +265 880 725 061
+- **LinkedIn:** [linkedin.com/in/gomezgani-chirwa-4b6286270](https://linkedin.com/in/gomezgani-chirwa-4b6286270)
 
-Focus: I'm passionate about the space where business strategy meets practical technology—figuring out what tools a business actually needs and then building them.
-
-Career Goal: To design and implement information systems that solve real, everyday challenges for businesses and organizations across Africa.
-
-📞 Contact Me:
-
-Email: chirwagomez@gmail.com (personal)
-
-Phone/WhatsApp: +256 880 725 061
-
-LinkedIn: linkedin.com/in/gomezgani-chirwa-4b6286270
-
-
-💬 Let's Connect!
+## 💬 Let's Connect!
 I'm always happy to:
-Chat about tech projects
-Help fellow students
-Learn from experienced developers
-Discuss business technology in Malawi
+- Chat about tech projects
+- Help fellow students
+- Learn from experienced developers
+- Discuss business technology in Malawi
 
-📄 Important Notes
-For Academic Purposes:
+## 📄 Important Notes
+**For Academic Purposes:**
 This is my original work for educational purposes at MUBAS. All code is written by me unless I specifically credit someone else in the comments.
 
-For Business Use:
-
+**For Business Use:**
 This is a learning project and might have bugs. If you want to use it for a real business, please test thoroughly first and consider getting help from an experienced developer.
 
-License:
-
+**License:**
 This project is under the MIT License - meaning you can use, modify and share it, but I'm not responsible if something goes wrong.
 
 <div align="center">
-🎓 Student by Day, Coder by Night
-"The best way to learn is to build something you care about."
 
-Last Updated: February 2026
+🎓 Student by Day, Coder by Night
+
+*"The best way to learn is to build something you care about."*
+
+Last Updated: April 2026
 Project Status: Actively Developing
 Commitment: Daily progress updates
 
-</div> 
-
-
+</div>
