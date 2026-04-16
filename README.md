@@ -61,68 +61,42 @@ This year semester 1 at MUBAS, I'm taking 6 modules. This project uses something
 
 ## 📸 See It in Action
 
-### Desktop Screenshots
-**Dashboard Overview:**
-![Dashboard Main View](screenshots/desktop/dashboard.png)
-*Main dashboard showing sales charts, inventory status and key metrics*
+### 🖥️ Desktop Screenshots
 
-**Sales Management:**
-![Sales Page](screenshots/desktop/sales.png)
-*Complete sales management with filtering, search and data export*
+| Dashboard | Sales |
+|-----------|-------|
+| <img src="screenshots/desktop/dashboard.png" width="400" alt="Dashboard"/> | <img src="screenshots/desktop/sales.png" width="400" alt="Sales"/> |
+| *Main dashboard with charts and key metrics* | *Sales management with filtering and export* |
 
-**Inventory Management:**
-![Inventory Page](screenshots/desktop/inventory.png)
-*Full inventory CRUD operations with stock alerts and restocking*
+| Inventory | Customers |
+|-----------|-----------|
+| <img src="screenshots/desktop/inventory.png" width="400" alt="Inventory"/> | <img src="screenshots/desktop/customer.png" width="400" alt="Customers"/> |
+| *Full inventory CRUD with stock alerts* | *Customer database with purchase history* |
 
-**Customer Management:**
-![Customer Page](screenshots/desktop/customer.png)
-*Customer database with contact information and purchase history*
+| Reports | Login |
+|---------|-------|
+| <img src="screenshots/desktop/reports%20and%20analysis.png" width="400" alt="Reports"/> | <img src="screenshots/desktop/login.png" width="400" alt="Login"/> |
+| *Business reports and analytics* | *Secure authentication interface* |
 
-**Reports & Analytics:**
-![Reports Page](screenshots/desktop/reports%20and%20analysis.png)
-*Comprehensive business reports and data analysis tools*
+---
 
-**Login Interface:**
-![Login Page](screenshots/desktop/login.png)
-*Secure authentication with role-based access*
+### 📱 Mobile Screenshots
 
-### Mobile Screenshots
-**Mobile Dashboard:**
-![Mobile Dashboard](screenshots/mobile/dashboard.png)
-*Responsive dashboard optimized for mobile devices*
+| Dashboard | Sales | Sales Detail |
+|-----------|-------|--------------|
+| <img src="screenshots/mobile/dashboard.png" width="220" alt="Mobile Dashboard"/> | <img src="screenshots/mobile/sales1.png" width="220" alt="Mobile Sales"/> | <img src="screenshots/mobile/sales2.png" width="220" alt="Mobile Sales Detail"/> |
 
-**Mobile Sales Management:**
-![Mobile Sales 1](screenshots/mobile/sales1.png)
-*Sales management interface on mobile devices*
+| Inventory | Customers | Reports |
+|-----------|-----------|---------|
+| <img src="screenshots/mobile/inventory.png" width="220" alt="Mobile Inventory"/> | <img src="screenshots/mobile/customer.png" width="220" alt="Mobile Customers"/> | <img src="screenshots/mobile/reports.png" width="220" alt="Mobile Reports"/> |
 
-**Mobile Sales Details:**
-![Mobile Sales 2](screenshots/mobile/sales2.png)
-*Detailed sales view with filtering options*
-
-**Mobile Inventory:**
-![Mobile Inventory](screenshots/mobile/inventory.png)
-*Inventory management accessible on mobile*
-
-**Mobile Customer View:**
-![Mobile Customer](screenshots/mobile/customer.png)
-*Customer management on mobile devices*
-
-**Mobile Reports:**
-![Mobile Reports 1](screenshots/mobile/reports.png)
-*Business reports accessible on mobile*
-
-**Mobile Reports Details:**
-![Mobile Reports 2](screenshots/mobile/reports2.png)
-*Detailed analytics and reporting on mobile*
-
-**Mobile Login:**
-![Mobile Login](screenshots/mobile/login.png)
-*Mobile-friendly authentication interface*
+| Reports Detail | Login | |
+|----------------|-------|-|
+| <img src="screenshots/mobile/reports2.png" width="220" alt="Mobile Reports 2"/> | <img src="screenshots/mobile/login.png" width="220" alt="Mobile Login"/> | |
 
 ---
 
 *📸 Screenshots captured from the live application showcasing all major features and mobile responsiveness.*
-
 
 ## 🛠️ How to Set It Up (For Developers)
 
@@ -163,8 +137,6 @@ Default Login (for testing):
 - **Demo User:** Gomez / gomez123
 
 (Change these immediately if deploying for real use!)
-
-
 
 ## 📁 How the Project is Organized
 
@@ -210,7 +182,6 @@ business-intelligence-dashboard/
 ├── run.py              # Starts the application
 └── README.md           # This file!
 ```
-
 
 ## 🔧 What's Completed ✅
 
@@ -336,8 +307,6 @@ This project is under the MIT License - meaning you can use, modify and share it
 
 *"The best way to learn is to build something you care about."*
 
-Last Updated: April 2026
-Project Status: Actively Developing
-Commitment: Daily progress updates
+Last Updated: April 2026 | Project Status: Actively Developing
 
 </div>
